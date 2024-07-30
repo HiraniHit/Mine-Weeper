@@ -1,0 +1,13 @@
+.row{
+    display: flex;
+}
+.box{
+    height: 50px;
+    width: 50px;
+    border: 1px solid rgb(255, 255, 255);
+    background-color: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: lightblue;
+}
