@@ -11,10 +11,8 @@ function generateGame(sizeOfBox, mine) {
     while (mineArray.length < mine) {
         let mineRow = Math.floor(Math.random() * sizeOfBox);
         let mineCol = Math.floor(Math.random() * sizeOfBox);
-        let mine = `${mineRow}-${mineCol}`;
-
         if (!mineArray.includes(mine)) {
-            mineArray.push(mine);
+            mineArray.push(`${mineRow}-${mineCol}`);
         }
     }
 
@@ -85,6 +83,7 @@ function aroundNumber(sizeOfBox, mineArray) {
 }
 function openDiv(id) {
     let clickedDiv = id.split("-");
+    console.log(clickedDiv);
 
     let totalRow = document.querySelectorAll(".row").length;
 
@@ -113,26 +112,78 @@ function openDiv(id) {
 
 function blankAllSmellerWhiteDiv(row,col,totalRow , currentDiv) {
 
-    let div = document.querySelector(`.box[id='${currentDiv[0]}-${currentDiv[1]}']`);
-    div.style.backgroundColor = "white"
+    // let div = document.querySelector(`.box[id='${currentDiv[0]}-${currentDiv[1]}']`);
+    // div.style.backgroundColor = "white"
     let arrayGlo = [...globalArray].flat(2)
-    for (let i = 0; i < totalRow; i++) {
-        for (let j = 0; j < totalRow; j++) {
+    // for (let i = 0; i < totalRow; i++) {
+    //     for (let j = 0; j < totalRow; j++) {
 
-            if(parseInt(currentDiv[0]) == i || parseInt(currentDiv[1]) == j ){
-                if(arrayGlo.includes(`${i + 1}-${j +1}`) !== -1){
-                    let div = document.querySelector(`.box[id='${parseInt(currentDiv[0]) + i}-${parseInt(currentDiv[1])+j}']`)
-                    if(div != undefined && div.textContent == ""){
-                        div.style.backgroundColor = "white"
-                    console.log(div.id);
-                    }
-                }
-            }
-         
             
-        
+    //             if(arrayGlo.includes(`${i + 1}-${j + 1}`) !== -1){
+    //                 let div = document.querySelector(`.box[id='${parseInt(currentDiv[0]) + i}-${parseInt(currentDiv[1])+j}']`)
+    //                 if(div != undefined && div.textContent == ""){
+    //                     div.style.backgroundColor = "white"
+    //                 console.log(div.id);
+    //                 }
+    //             }
+            
+ 
+    //     }
+    // }
+   
 
-
+    if(arrayGlo.includes(`${row + 1}-${col + 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${currentDiv[0]}-${currentDiv[1]}']`);
+        div.style.backgroundColor = "white"
+    }
+    if(arrayGlo.includes(`${(row +1 ) + 1}-${(col + 1) + 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${parseInt(currentDiv[0]) + 1}-${parseInt(currentDiv[1])+1}']`)
+        if(div != undefined ){
+            div.style.backgroundColor = "white"
         }
     }
+    if(arrayGlo.includes(`${(row -1 ) + 1}-${(col + 1) - 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${parseInt(currentDiv[0]) - 1}-${parseInt(currentDiv[1])-1}']`)
+        if(div != undefined ){
+            div.style.backgroundColor = "white"
+            
+        }
+    }
+     if(arrayGlo.includes(`${(row -1 ) + 1}-${(col) - 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${parseInt(currentDiv[0]) - 1}-${parseInt(currentDiv[1])}']`)
+        if(div != undefined ){
+            div.style.backgroundColor = "white"
+        }
+    }
+    if(arrayGlo.includes(`${(row -1 ) + 1}-${(col + 1) + 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${parseInt(currentDiv[0]) - 1}-${parseInt(currentDiv[1])+ 1}']`)
+        if(div != undefined ){
+            div.style.backgroundColor = "white"
+        }
+    }
+    if(arrayGlo.includes(`${(row) + 1}-${(col - 1) + 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${parseInt(currentDiv[0])}-${parseInt(currentDiv[1])- 1}']`)
+        if(div != undefined ){
+            div.style.backgroundColor = "white"
+        }
+    }
+    if(arrayGlo.includes(`${(row) + 1}-${(col + 1) + 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${parseInt(currentDiv[0])}-${parseInt(currentDiv[1])+ 1}']`)
+        if(div != undefined ){
+            div.style.backgroundColor = "white"
+        }
+    }
+    if(arrayGlo.includes(`${(row + 1) + 1}-${(col - 1) + 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${parseInt(currentDiv[0]) + 1}-${parseInt(currentDiv[1])- 1}']`)
+        if(div != undefined ){
+            div.style.backgroundColor = "white"
+        }
+    }
+    if(arrayGlo.includes(`${(row + 1) + 1}-${(col ) + 1}`) !== -1){
+        let div = document.querySelector(`.box[id='${parseInt(currentDiv[0]) + 1}-${parseInt(currentDiv[1])}']`)
+        if(div != undefined ){
+            div.style.backgroundColor = "white"
+        }
+    }
+
 }
