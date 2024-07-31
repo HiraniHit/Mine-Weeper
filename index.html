@@ -8,22 +8,27 @@
 </head>
 <body>
 
-    <div>Mine Weeper</div>
+    <h1>Mine Weeper</h1>
 
-    <div>
-        <button class="modeBtn" value="beginner" onclick="generateGame(9,10)">beginner</button>
-        <button class="modeBtn" value="InterMediate" onclick="generateGame(16,40)">InterMediate</button>
-        <button class="modeBtn" value="Advance" onclick="generateGame(30,99)">Advance</button>
+    <div class="mode-btns">
+        <button class="modeBtn" value="beginner" onclick="generateGame(9,9,10)">beginner</button>
+        <button class="modeBtn" value="InterMediate" onclick="generateGame(16,16,40)">InterMediate</button>
+        <button class="modeBtn" value="Advance" onclick="generateGame(16,30,99)">Advance</button>
         <Button class="modeBtn" value="Custom" onclick="generateWithPrompt()">Custom</Button>
     </div>
 
-    <div class="beginner-main">
+    <div class="container" draggable="false">
+
+        <div class="start">Select Your Mode</div>
+        <div class="beginner-main">
         
+        </div>
+        <div class="playAgain hide">
+            <h2 id="result"></h2>
+            <button class="playAgain-btn" onclick="window.location.reload()">Play Again</button>
+        </div>
     </div>
 
-    <div class="playAgain hide">
-        <button onclick="window.location.reload()">Play Again</button>
-    </div>
     
 </body>
 <script src="index.js"></script>

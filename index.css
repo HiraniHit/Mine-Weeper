@@ -1,9 +1,39 @@
-/* ::selection{
+::selection{
     user-select: none;
-} */
-
+}
+body{
+    background-color: rgb(20, 20, 20);
+}
 button{
     padding: 8px 16px;
+}
+h1{
+    text-align: center;
+    color: white;
+}
+.start{
+    font-size: 30px;
+}
+.mode-btns{
+    margin: auto;
+    display:flex ;
+    width: 500px;
+    justify-content: space-around;
+    padding: 30px 0;
+}
+.container{
+    height: 850px;
+    margin: 0 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(234, 197, 255);
+    box-shadow: 0 0 150px 20px rgba(0, 0, 0, 0.795) inset;
+}
+.beginner-main{
+    margin-top: 50px;
+    background-color: rgba(0, 0, 0, 0.664);
+    backdrop-filter: blur(20px);
 }
 .row{
     display: flex;
@@ -13,12 +43,31 @@ button{
     height: 40px;
     min-height: 25px;
     min-width: 25px;
-    border: 1px solid rgb(255, 255, 255);
+    margin: 1px;
     background-color: rgb(14, 14, 14);
     color: rgb(14, 14, 14);
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.playAgain{
+
+    padding: 20px;
+    height: 200px;
+    width: 500px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.playAgain > h2{
+
+    font-size: 30px;
+    width: fit-content;
+}
+.playAgain-btn{
+
+    width: fit-content;
 }
 .hide {
     display: none;

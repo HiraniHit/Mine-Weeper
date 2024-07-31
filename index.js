@@ -1,29 +1,34 @@
-let globalArray;
-let mineArray;
+let arrayWithoutMine = [];
+let result = document.getElementById("result")
+let board = document.querySelector(".beginner-main")
+let start = document.querySelector(".start")
 function generateWithPrompt() {
-    let size = prompt("Enter a size of board");
+
+    if(!(board.classList.contains("hide"))){
+    let row = prompt("Enter a size of ROW");
+    let col = prompt("Enter a size of COL");
     let mine = prompt("Enter a mine amount");
-    generateGame(size, mine);
+    generateGame(row, col, mine);
+    }
 }
 let boxArray = [];
-function generateGame(sizeOfBox, mine) {
-    let mineArray = [];
-    globalArray = boxArray;
-    mineArray = mineArray;
+let mineArray = [];
+function generateGame(Row, Col, mine) {
+    start.classList.add("hide")
     let beginnerDiv = document.querySelector(".beginner-main");
     let game = "";
 
     while (mineArray.length < mine) {
-        let mineRow = Math.floor(Math.random() * sizeOfBox);
-        let mineCol = Math.floor(Math.random() * sizeOfBox);
-        if (!mineArray.includes(mine)) {
+        let mineRow = Math.floor(Math.random() * Row);
+        let mineCol = Math.floor(Math.random() * Col);
+        if (!mineArray.includes(`${mineRow}-${mineCol}`)) {
             mineArray.push(`${mineRow}-${mineCol}`);
         }
     }
 
-    for (let i = 0; i < sizeOfBox; i++) {
+    for (let i = 0; i < Row; i++) {
         game += `<div class="row">`;
-        for (let j = 0; j < sizeOfBox; j++) {
+        for (let j = 0; j < Col; j++) {
             let isMine = mineArray.includes(`${i}-${j}`) ? "mine" : "";
             game += `<div class="box ${isMine}" id="${i}-${j}" onclick="openDiv('${i}-${j}')"></div>`;
             boxArray.push([`${i}-${j}`]);
@@ -38,11 +43,11 @@ function generateGame(sizeOfBox, mine) {
         value.classList.add("visited");
     });
 
-    aroundNumber(sizeOfBox, mineArray);
+    aroundNumber(Row, Col, mineArray);
 }
-function aroundNumber(sizeOfBox, mineArray) {
-    for (let i = 0; i < sizeOfBox; i++) {
-        for (let j = 0; j < sizeOfBox; j++) {
+function aroundNumber(Row, Col, mineArray) {
+    for (let i = 0; i < Row; i++) {
+        for (let j = 0; j < Col; j++) {
             let box = document.getElementById(i + "-" + j);
             if (box.classList.contains("mine")) {
             } else {
@@ -54,7 +59,7 @@ function aroundNumber(sizeOfBox, mineArray) {
                             count++;
                     }
                     if (mineArray.indexOf(i - 1 + "-" + j) !== -1) count++;
-                    if (j < sizeOfBox - 1) {
+                    if (j < Row - 1) {
                         if (mineArray.indexOf(i - 1 + "-" + (j + 1)) !== -1)
                             count++;
                     }
@@ -63,17 +68,17 @@ function aroundNumber(sizeOfBox, mineArray) {
                 if (j > 0) {
                     if (mineArray.indexOf(i + "-" + (j - 1)) !== -1) count++;
                 }
-                if (j < sizeOfBox - 1) {
+                if (j < Col - 1) {
                     if (mineArray.indexOf(i + "-" + (j + 1)) !== -1) count++;
                 }
 
-                if (i < sizeOfBox - 1) {
+                if (i < Col - 1) {
                     if (j > 0) {
                         if (mineArray.indexOf(i + 1 + "-" + (j - 1)) !== -1)
                             count++;
                     }
                     if (mineArray.indexOf(i + 1 + "-" + j) !== -1) count++;
-                    if (j < sizeOfBox - 1) {
+                    if (j < Col - 1) {
                         if (mineArray.indexOf(i + 1 + "-" + (j + 1)) !== -1)
                             count++;
                     }
@@ -97,11 +102,12 @@ function openDiv(id) {
         let allMines = document.querySelectorAll(".mine");
         allMines.forEach((value) => {
             value.style.backgroundColor = "red";
-            box.style.color = "white";
+            value.style.color = "white";
         });
         box.style.color = "white";
         box.style.backgroundColor = "red";
         document.querySelector(".beginner-main").style.pointerEvents = "none";
+        result.textContent = "Game Over"
         setTimeout(() => {
             document.querySelector(".beginner-main").classList.add("hide");
             document.querySelector(".playAgain").classList.remove("hide");
@@ -109,8 +115,27 @@ function openDiv(id) {
     } else if (box.textContent == "") {
         blankAllSmellerWhiteDiv(id);
     } else {
-        box.style.color = "black";
-        box.style.backgroundColor = "white";
+        box.style.color = "white";
+        box.style.backgroundColor = "transparent";
+    }
+
+    let allDiv = document.querySelectorAll(".box");
+    let mineArray = document.querySelectorAll(`.mine`)
+    arrayWithoutMine = [];
+    allDiv.forEach((item) =>
+        item.classList.contains("mine") ? "" : arrayWithoutMine.push(item)
+    );
+    let isWinner = arrayWithoutMine.filter(
+        (value) => value.style.backgroundColor == "white"
+    );
+    if (allDiv.length - mineArray.length == isWinner.length) {
+        console.log("winner");
+        mineArray.forEach((item) => item.style.backgroundColor = "red")
+        result.textContent = "Yupp!! Winner"
+        setTimeout(()=>{
+            document.querySelector(".beginner-main").classList.add("hide");
+            document.querySelector(".playAgain").classList.remove("hide");
+        },2000)
     }
 }
 
@@ -130,7 +155,7 @@ function blankAllSmellerWhiteDiv(divId) {
                 parseInt(selectedId[1]) + 1
             }']`
         );
-        if (div != null) {
+        if (div != null && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
             if (
                 div.textContent == "" &&
@@ -143,6 +168,7 @@ function blankAllSmellerWhiteDiv(divId) {
                 let next = document.getElementById(nextId);
                 if (!next.classList.contains("visited")) {
                     div.classList.add("visited");
+
                     blankAllSmellerWhiteDiv(nextId);
                 }
             }
@@ -155,7 +181,7 @@ function blankAllSmellerWhiteDiv(divId) {
                 parseInt(selectedId[1]) - 1
             }']`
         );
-        if (div != null) {
+        if (div != null && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
 
             if (
@@ -180,7 +206,7 @@ function blankAllSmellerWhiteDiv(divId) {
                 parseInt(selectedId[1]) - 1
             }']`
         );
-        if (div != null) {
+        if (div != null && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
 
             if (
@@ -205,7 +231,7 @@ function blankAllSmellerWhiteDiv(divId) {
                 parseInt(selectedId[1]) + 1
             }']`
         );
-        if (div != null) {
+        if (div != null && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
 
             if (
@@ -230,7 +256,7 @@ function blankAllSmellerWhiteDiv(divId) {
                 selectedId[1]
             )}']`
         );
-        if (div != null) {
+        if (div != null && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
 
             if (
@@ -255,7 +281,7 @@ function blankAllSmellerWhiteDiv(divId) {
                 selectedId[1]
             )}']`
         );
-        if (div != null) {
+        if (div != null && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
 
             if (
@@ -280,7 +306,7 @@ function blankAllSmellerWhiteDiv(divId) {
                 parseInt(selectedId[1]) - 1
             }']`
         );
-        if (div != null) {
+        if (div != null && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
 
             if (
@@ -305,8 +331,9 @@ function blankAllSmellerWhiteDiv(divId) {
                 parseInt(selectedId[1]) + 1
             }']`
         );
-        if (div != null) {
+        if (div != null && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
+            
 
             if (
                 div.textContent == "" &&
@@ -333,7 +360,7 @@ function blankAllSmellerWhiteDiv(divId) {
     //     );
 
     //     if (div != undefined && !div.classList.contains("mine")) {
-    //         div.style.backgroundColor = "white";
+    //         div.style.backgroundColor = "rgb(234, 197, 255)";
     //         let nextDivId = `${parseInt(div.id[0]) + 1}-${parseInt(div.id[2] )+1}`
     //         console.log(nextDivId);
     //         if(div.classList.contains("blank") && div.textContent == ""){
