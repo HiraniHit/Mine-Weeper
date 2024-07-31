@@ -1,15 +1,24 @@
+/* ::selection{
+    user-select: none;
+} */
+
+button{
+    padding: 8px 16px;
+}
 .row{
     display: flex;
 }
 .box{
-    height: 50px;
-    width: 50px;
+    width: 40px;
+    height: 40px;
+    min-height: 25px;
+    min-width: 25px;
     border: 1px solid rgb(255, 255, 255);
-    background-color: lightblue;
+    background-color: rgb(14, 14, 14);
+    color: rgb(14, 14, 14);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: lightblue;
 }
 .hide {
     display: none;

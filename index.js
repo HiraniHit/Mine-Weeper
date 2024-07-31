@@ -1,12 +1,12 @@
 let globalArray;
 let mineArray;
-function generateWithPrompt(){
-    let size = prompt("Enter a size of board")
-    let mine = prompt("Enter a mine amount")
-    generateGame(size, mine)
+function generateWithPrompt() {
+    let size = prompt("Enter a size of board");
+    let mine = prompt("Enter a mine amount");
+    generateGame(size, mine);
 }
+let boxArray = [];
 function generateGame(sizeOfBox, mine) {
-    let boxArray = [];
     let mineArray = [];
     globalArray = boxArray;
     mineArray = mineArray;
@@ -35,7 +35,9 @@ function generateGame(sizeOfBox, mine) {
     let mineBox = document.querySelectorAll(".mine");
     mineBox.forEach((value) => {
         value.textContent = "M";
+        value.classList.add("visited");
     });
+
     aroundNumber(sizeOfBox, mineArray);
 }
 function aroundNumber(sizeOfBox, mineArray) {
@@ -90,213 +92,392 @@ function aroundNumber(sizeOfBox, mineArray) {
 function openDiv(id) {
     let clickedDiv = id.split("-");
 
-    let totalRow = document.querySelectorAll(".row").length;
-
-    for (let i = 0; i < totalRow; i++) {
-        for (let j = 0; j < totalRow; j++) {
-            let box = document.getElementById(
-                `${clickedDiv[0]}-${clickedDiv[1]}`
-            );
-            if (box.classList.contains("mine")) {
-                let allMines = document.querySelectorAll(".mine");
-                allMines.forEach((value) => {
-                    value.style.backgroundColor = "red";
-                    box.style.color = "white";
-                });
-                box.style.color = "white";
-                box.style.backgroundColor = "red";
-                setTimeout(()=>{
-                    document.querySelector(".beginner-main").classList.add("hide")
-                document.querySelector(".playAgain").classList.remove("hide")
-                },2000)
-            } else if (box.textContent == "") {
-                blankAllSmellerWhiteDiv(i, j, totalRow, clickedDiv);
-            } else {
-                box.style.color = "black";
-                box.style.backgroundColor = "white";
-            }
-        }
+    let box = document.getElementById(`${clickedDiv[0]}-${clickedDiv[1]}`);
+    if (box.classList.contains("mine")) {
+        let allMines = document.querySelectorAll(".mine");
+        allMines.forEach((value) => {
+            value.style.backgroundColor = "red";
+            box.style.color = "white";
+        });
+        box.style.color = "white";
+        box.style.backgroundColor = "red";
+        document.querySelector(".beginner-main").style.pointerEvents = "none";
+        setTimeout(() => {
+            document.querySelector(".beginner-main").classList.add("hide");
+            document.querySelector(".playAgain").classList.remove("hide");
+        }, 2000);
+    } else if (box.textContent == "") {
+        blankAllSmellerWhiteDiv(id);
+    } else {
+        box.style.color = "black";
+        box.style.backgroundColor = "white";
     }
 }
 
-function blankAllSmellerWhiteDiv(row, col, totalRow, currentDiv) {
-    let arrayGlo = [...globalArray].flat(2);
-
-//     let posableBox = [
-//         [0,0]
-//         [-1, -1],
-//         [-1, 0],
-//         [-1, +1],
-//         [0, -1],
-//         [0 - 0],
-//         [0, +1],
-//         [+1, -1],
-//         [+1, 0],
-//         [+1, +1],
-//     ];
-
-
-// posableBox.forEach(item => {
-//     if(arrayGlo.includes(`${parseInt(currentDiv[0])}-${parseInt(currentDiv[1])}`) !== -1){
-
-//     }
-
-// })
-
-
-    if (
-        arrayGlo.includes( `${parseInt(currentDiv[0])}-${parseInt(currentDiv[1])}`) !== -1) {
-        let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0])}-${parseInt(currentDiv[1])}']`
-        );
+function blankAllSmellerWhiteDiv(divId) {
+    let id = divId.toString();
+    let selectedId = divId.toString().split("-");
+    if (boxArray.includes(id) !== -1) {
+        let div = document.querySelector(`.box[id='${id}']`);
         if (div != undefined && !div.classList.contains("mine")) {
             div.style.backgroundColor = "white";
         }
     }
-    if (arrayGlo.includes(`${row + 1}-${col + 1}`) !== -1) {
+
+    if (boxArray.includes(`${parseInt(id[0]) + 1}-${id[2] + 1}`) !== -1) {
         let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0]) + 1}-${
-                parseInt(currentDiv[1]) + 1
+            `.box[id='${parseInt(selectedId[0]) + 1}-${
+                parseInt(selectedId[1]) + 1
             }']`
         );
-        if (div != undefined && !div.classList.contains("mine")) {
+        if (div != null) {
             div.style.backgroundColor = "white";
-            let nextDivId = div.id
-            if(div.classList.contains("blank")){
-                removeNextSpace(row + 1 ,col+1,nextDivId)
+            if (
+                div.textContent == "" &&
+                div.classList.contains("blank") &&
+                div.style.backgroundColor == "white"
+            ) {
+                let nextId = `${parseInt(selectedId[0]) + 1}-${
+                    parseInt(selectedId[1]) + 1
+                }`;
+                let next = document.getElementById(nextId);
+                if (!next.classList.contains("visited")) {
+                    div.classList.add("visited");
+                    blankAllSmellerWhiteDiv(nextId);
+                }
             }
         }
     }
-    if (arrayGlo.includes(`${row - 1}-${col + 1}`) !== -1) {
+
+    if (boxArray.includes(`${parseInt(id[0]) - 1}-${id[2] - 1}`) !== -1) {
         let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0]) - 1}-${
-                parseInt(currentDiv[1]) + 1
+            `.box[id='${parseInt(selectedId[0]) - 1}-${
+                parseInt(selectedId[1]) - 1
             }']`
         );
-        if (div != undefined && !div.classList.contains("mine")) {
+        if (div != null) {
             div.style.backgroundColor = "white";
+
+            if (
+                div.textContent == "" &&
+                div.classList.contains("blank") &&
+                div.style.backgroundColor == "white"
+            ) {
+                let nextId = `${parseInt(selectedId[0]) - 1}-${
+                    parseInt(selectedId[1]) - 1
+                }`;
+                let next = document.getElementById(nextId);
+                if (!next.classList.contains("visited")) {
+                    div.classList.add("visited");
+                    blankAllSmellerWhiteDiv(nextId);
+                }
+            }
         }
     }
-    if (arrayGlo.includes(`${row - 1}-${col}`) !== -1) {
+    if (boxArray.includes(`${parseInt(id[0]) + 1}-${id[2] - 1}`) !== -1) {
         let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0]) - 1}-${parseInt(
-                currentDiv[1]
+            `.box[id='${parseInt(selectedId[0]) + 1}-${
+                parseInt(selectedId[1]) - 1
+            }']`
+        );
+        if (div != null) {
+            div.style.backgroundColor = "white";
+
+            if (
+                div.textContent == "" &&
+                div.classList.contains("blank") &&
+                div.style.backgroundColor == "white"
+            ) {
+                let nextId = `${parseInt(selectedId[0]) + 1}-${
+                    parseInt(selectedId[1]) - 1
+                }`;
+                let next = document.getElementById(nextId);
+                if (!next.classList.contains("visited")) {
+                    div.classList.add("visited");
+                    blankAllSmellerWhiteDiv(nextId);
+                }
+            }
+        }
+    }
+    if (boxArray.includes(`${parseInt(id[0]) - 1}-${id[2] + 1}`) !== -1) {
+        let div = document.querySelector(
+            `.box[id='${parseInt(selectedId[0]) - 1}-${
+                parseInt(selectedId[1]) + 1
+            }']`
+        );
+        if (div != null) {
+            div.style.backgroundColor = "white";
+
+            if (
+                div.textContent == "" &&
+                div.classList.contains("blank") &&
+                div.style.backgroundColor == "white"
+            ) {
+                let nextId = `${parseInt(selectedId[0]) - 1}-${
+                    parseInt(selectedId[1]) + 1
+                }`;
+                let next = document.getElementById(nextId);
+                if (!next.classList.contains("visited")) {
+                    div.classList.add("visited");
+                    blankAllSmellerWhiteDiv(nextId);
+                }
+            }
+        }
+    }
+    if (boxArray.includes(`${parseInt(id[0]) - 1}-${id[2]}`) !== -1) {
+        let div = document.querySelector(
+            `.box[id='${parseInt(selectedId[0]) - 1}-${parseInt(
+                selectedId[1]
             )}']`
         );
-        if (div != undefined && !div.classList.contains("mine")) {
+        if (div != null) {
             div.style.backgroundColor = "white";
+
+            if (
+                div.textContent == "" &&
+                div.classList.contains("blank") &&
+                div.style.backgroundColor == "white"
+            ) {
+                let nextId = `${parseInt(selectedId[0]) - 1}-${parseInt(
+                    selectedId[1]
+                )}`;
+                let next = document.getElementById(nextId);
+                if (!next.classList.contains("visited")) {
+                    div.classList.add("visited");
+                    blankAllSmellerWhiteDiv(nextId);
+                }
+            }
         }
     }
-    if (arrayGlo.includes(`${row - 1}-${col - 1}`) !== -1) {
+    if (boxArray.includes(`${parseInt(id[0]) + 1}-${id[2]}`) !== -1) {
         let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0]) - 1}-${
-                parseInt(currentDiv[1]) - 1
-            }']`
-        );
-        if (div != undefined && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-        }
-    }
-    if (arrayGlo.includes(`${row}-${col - 1}`) !== -1) {
-        let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0])}-${
-                parseInt(currentDiv[1]) - 1
-            }']`
-        );
-        if (div != undefined && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-        }
-    }
-    if (arrayGlo.includes(`${row}-${col + 1}`) !== -1) {
-        let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0])}-${
-                parseInt(currentDiv[1]) + 1
-            }']`
-        );
-        if (div != undefined && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-        }
-    }
-    if (arrayGlo.includes(`${row + 1}-${col - 1}`) !== -1) {
-        let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0]) + 1}-${
-                parseInt(currentDiv[1]) - 1
-            }']`
-        );
-        if (div != undefined && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-        }
-    }
-    if (arrayGlo.includes(`${row + 1}-${col}`) !== -1) {
-        let div = document.querySelector(
-            `.box[id='${parseInt(currentDiv[0]) + 1}-${parseInt(
-                currentDiv[1]
+            `.box[id='${parseInt(selectedId[0]) + 1}-${parseInt(
+                selectedId[1]
             )}']`
         );
-        if (div != undefined && !div.classList.contains("mine")) {
+        if (div != null) {
             div.style.backgroundColor = "white";
+
+            if (
+                div.textContent == "" &&
+                div.classList.contains("blank") &&
+                div.style.backgroundColor == "white"
+            ) {
+                let nextId = `${parseInt(selectedId[0]) + 1}-${parseInt(
+                    selectedId[1]
+                )}`;
+                let next = document.getElementById(nextId);
+                if (!next.classList.contains("visited")) {
+                    div.classList.add("visited");
+                    blankAllSmellerWhiteDiv(nextId);
+                }
+            }
         }
     }
-    
+    if (boxArray.includes(`${parseInt(id[0])}-${id[2] - 1}`) !== -1) {
+        let div = document.querySelector(
+            `.box[id='${parseInt(selectedId[0])}-${
+                parseInt(selectedId[1]) - 1
+            }']`
+        );
+        if (div != null) {
+            div.style.backgroundColor = "white";
+
+            if (
+                div.textContent == "" &&
+                div.classList.contains("blank") &&
+                div.style.backgroundColor == "white"
+            ) {
+                let nextId = `${parseInt(selectedId[0])}-${
+                    parseInt(selectedId[1]) - 1
+                }`;
+                let next = document.getElementById(nextId);
+                if (!next.classList.contains("visited")) {
+                    div.classList.add("visited");
+                    blankAllSmellerWhiteDiv(nextId);
+                }
+            }
+        }
+    }
+    if (boxArray.includes(`${parseInt(id[0])}-${id[2] + 1}`) !== -1) {
+        let div = document.querySelector(
+            `.box[id='${parseInt(selectedId[0])}-${
+                parseInt(selectedId[1]) + 1
+            }']`
+        );
+        if (div != null) {
+            div.style.backgroundColor = "white";
+
+            if (
+                div.textContent == "" &&
+                div.classList.contains("blank") &&
+                div.style.backgroundColor == "white"
+            ) {
+                let nextId = `${parseInt(selectedId[0])}-${
+                    parseInt(selectedId[1]) + 1
+                }`;
+                let next = document.getElementById(nextId);
+                if (!next.classList.contains("visited")) {
+                    div.classList.add("visited");
+                    blankAllSmellerWhiteDiv(nextId);
+                }
+            }
+        }
+    }
+
+    // if (boxArray.includes(`${id[0] + 1}-${id[2] + 1}`) !== -1) {
+    //     let div = document.querySelector(
+    //         `.box[id='${parseInt(id[0]) + 1}-${
+    //             parseInt(id[2]) + 1
+    //         }']`
+    //     );
+
+    //     if (div != undefined && !div.classList.contains("mine")) {
+    //         div.style.backgroundColor = "white";
+    //         let nextDivId = `${parseInt(div.id[0]) + 1}-${parseInt(div.id[2] )+1}`
+    //         console.log(nextDivId);
+    //         if(div.classList.contains("blank") && div.textContent == ""){
+    //             blankAllSmellerWhiteDiv(row + 1, col + 1,  nextDivId)
+    //         }else{
+    //             return;
+    //         }
+    //     }else{
+    //         return;
+    //     }
+    // }
+    // if (arrayGlo.includes(`${row - 1}-${col + 1}`) !== -1) {
+    //     let div = document.querySelector(
+    //         `.box[id='${parseInt(currentDiv[0]) - 1}-${
+    //             parseInt(currentDiv[1]) + 1
+    //         }']`
+    //     );
+    //     if (div != undefined && !div.classList.contains("mine")) {
+    //         div.style.backgroundColor = "white";
+    //         let nextDivId = [`${parseInt(div.id[0]) - 1}`,`${parseInt(div.id[2]) +1}`]
+    //         if(div.classList.contains("blank") && div.textContent == ""){
+    //             blankAllSmellerWhiteDiv(row -1, col +1, totalRow, nextDivId)
+    //         }else{
+    //             return;
+    //         }
+    //     }else{
+    //         return;
+    //     }
+    // }
+    // if (arrayGlo.includes(`${row - 1}-${col}`) !== -1) {
+    //     let div = document.querySelector(
+    //         `.box[id='${parseInt(currentDiv[0]) - 1}-${parseInt(
+    //             currentDiv[1]
+    //         )}']`
+    //     );
+    //     if (div != undefined && !div.classList.contains("mine")) {
+    //         div.style.backgroundColor = "white";
+    //         let nextDivId = [`${parseInt(div.id[0]) - 1}`,`${parseInt(div.id[2] )}`]
+    //         if(div.classList.contains("blank") && div.textContent == ""){
+    //             blankAllSmellerWhiteDiv(row-1, col , totalRow, nextDivId)
+    //         }else{
+    //             return;
+    //         }
+    //     }
+    // }
+    // if (arrayGlo.includes(`${row - 1}-${col - 1}`) !== -1) {
+    //     let div = document.querySelector(
+    //         `.box[id='${parseInt(currentDiv[0]) - 1}-${
+    //             parseInt(currentDiv[1]) - 1
+    //         }']`
+    //     );
+    //     if (div != undefined && !div.classList.contains("mine")) {
+    //         div.style.backgroundColor = "white";
+    //     }
+    // }
+    // if (arrayGlo.includes(`${row}-${col - 1}`) !== -1) {
+    //     let div = document.querySelector(
+    //         `.box[id='${parseInt(currentDiv[0])}-${
+    //             parseInt(currentDiv[1]) - 1
+    //         }']`
+    //     );
+    //     if (div != undefined && !div.classList.contains("mine")) {
+    //         div.style.backgroundColor = "white";
+    //     }
+    // }
+    // if (arrayGlo.includes(`${row}-${col + 1}`) !== -1) {
+    //     let div = document.querySelector(
+    //         `.box[id='${parseInt(currentDiv[0])}-${
+    //             parseInt(currentDiv[1]) + 1
+    //         }']`
+    //     );
+    //     if (div != undefined && !div.classList.contains("mine")) {
+    //         div.style.backgroundColor = "white";
+    //     }
+    // }
+    // if (arrayGlo.includes(`${row + 1}-${col - 1}`) !== -1) {
+    //     let div = document.querySelector(
+    //         `.box[id='${parseInt(currentDiv[0]) + 1}-${
+    //             parseInt(currentDiv[1]) - 1
+    //         }']`
+    //     );
+    //     if (div != undefined && !div.classList.contains("mine")) {
+    //         div.style.backgroundColor = "white";
+    //     }
+    // }
+    // if (arrayGlo.includes(`${row + 1}-${col}`) !== -1) {
+    //     let div = document.querySelector(
+    //         `.box[id='${parseInt(currentDiv[0]) + 1}-${parseInt(
+    //             currentDiv[1]
+    //         )}']`
+    //     );
+    //     if (div != undefined && !div.classList.contains("mine")) {
+    //         div.style.backgroundColor = "white";
+    //         let nextDivId = [`${parseInt(div.id[0]) + 1}`,`${parseInt(div.id[2] )}`]
+    //         if(div.classList.contains("blank") && div.textContent == ""){
+    //             blankAllSmellerWhiteDiv(row +1, col, totalRow, nextDivId)
+    //         }else{
+    //             return;
+    //         }
+    //     }else{
+    //         return;
+    //     }
+    // }else{return;}
 }
 
-
-function removeNextSpace(row,col,divId){
+function removeNextSpace(row, col, divId) {
     //     let posableBox = [
-//         [0,0]
-//         [-1, -1],
-//         [-1, 0],
-//         [-1, +1],
-//         [0, -1],
-//         [0 - 0],
-//         [0, +1],
-//         [+1, -1],
-//         [+1, 0],
-//         [+1, +1],
-//     ];
-
-let count ;;
-if(count > 10){
-    return;
-}
-
-
-    let div = document.getElementById(divId)
-    console.log(divId);
-    console.log(divId[0],divId[2]);
-
-    // -1 -1
-
-    let div1 = document.getElementById(`${parseInt(divId[0]) + 1}-${parseInt(divId[2]) + 1}`)
-    let div1Id = div1 != null ? div.id : ""
-    if(div1 != null && !(div1.classList.contains("mine"))){
-        div1.style.backgroundColor = "white"
-        console.log(div1Id);
-        
-    }
-
-    let div2 = document.getElementById(`${parseInt(divId[0]) + 1}-${parseInt(divId[2])}`)
-    let div2Id = div1 != null ? div.id : ""
-    if(div2 != null && !(div2.classList.contains("mine"))){
-        div2.style.backgroundColor = "white"
-        console.log(div2Id);
-        
-    }
-
-    let div3 = document.getElementById(`${parseInt(divId[0])}-${parseInt(divId[2]) + 1}`)
-    let div3Id = div3 != null ? div.id : ""
-    if(div3 != null && !(div3.classList.contains("mine"))){
-        div3.style.backgroundColor = "white"
-        console.log(div3Id);
-       
-    }
-
+    //         [0,0]
+    //         [-1, -1],
+    //         [-1, 0],
+    //         [-1, +1],
+    //         [0, -1],
+    //         [0 - 0],
+    //         [0, +1],
+    //         [+1, -1],
+    //         [+1, 0],
+    //         [+1, +1],
+    //     ];
+    // let div = document.getElementById(divId)
+    // console.log(divId);
+    // console.log(divId[0],divId[2]);
+    // // -1 -1
+    // let div1 = document.getElementById(`${parseInt(divId[0]) + 1}-${parseInt(divId[2]) + 1}`)
+    // let div1Id = div1 != null ? div.id : ""
+    // if(div1 != null && !(div1.classList.contains("mine"))){
+    //     div1.style.backgroundColor = "white"
+    //     console.log(div1Id);
+    // }
+    // let div2 = document.getElementById(`${parseInt(divId[0]) + 1}-${parseInt(divId[2])}`)
+    // let div2Id = div1 != null ? div.id : ""
+    // if(div2 != null && !(div2.classList.contains("mine"))){
+    //     div2.style.backgroundColor = "white"
+    //     console.log(div2Id);
+    // }
+    // let div3 = document.getElementById(`${parseInt(divId[0])}-${parseInt(divId[2]) + 1}`)
+    // let div3Id = div3 != null ? div.id : ""
+    // if(div3 != null && !(div3.classList.contains("mine"))){
+    //     div3.style.backgroundColor = "white"
+    //     console.log(div3Id);
+    // }
     // let div1 = document.getElementById(`${parseInt(divId[0]) + 1}-${parseInt(divId[2]) + 1}`)
     // let div1Id = div1 != null ? div.id : ""
     // if(div1 != null && div1.classList.contains("blank")){
     //     div1.style.backgroundColor = "white"
     //     console.log(div1Id);
-        
     // }
-    
 }
