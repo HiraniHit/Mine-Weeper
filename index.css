@@ -11,3 +11,6 @@
     align-items: center;
     color: lightblue;
 }
+.hide {
+    display: none;
+}
