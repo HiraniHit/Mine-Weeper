@@ -1,20 +1,19 @@
 let arrayWithoutMine = [];
-let result = document.getElementById("result")
-let board = document.querySelector(".beginner-main")
-let start = document.querySelector(".start")
+let result = document.getElementById("result");
+let board = document.querySelector(".beginner-main");
+let start = document.querySelector(".start");
 function generateWithPrompt() {
-
-    if(!(board.classList.contains("hide"))){
-    let row = prompt("Enter a size of ROW");
-    let col = prompt("Enter a size of COL");
-    let mine = prompt("Enter a mine amount");
-    generateGame(row, col, mine);
+    if (!board.classList.contains("hide")) {
+        let row = prompt("Enter a size of ROW");
+        let col = prompt("Enter a size of COL");
+        let mine = prompt("Enter a mine amount");
+        generateGame(row, col, mine);
     }
 }
 let boxArray = [];
 let mineArray = [];
 function generateGame(Row, Col, mine) {
-    start.classList.add("hide")
+    start.classList.add("hide");
     let beginnerDiv = document.querySelector(".beginner-main");
     let game = "";
 
@@ -107,7 +106,7 @@ function openDiv(id) {
         box.style.color = "white";
         box.style.backgroundColor = "red";
         document.querySelector(".beginner-main").style.pointerEvents = "none";
-        result.textContent = "Game Over"
+        result.textContent = "Game Over";
         setTimeout(() => {
             document.querySelector(".beginner-main").classList.add("hide");
             document.querySelector(".playAgain").classList.remove("hide");
@@ -120,22 +119,22 @@ function openDiv(id) {
     }
 
     let allDiv = document.querySelectorAll(".box");
-    let mineArray = document.querySelectorAll(`.mine`)
+    let mineArray = document.querySelectorAll(`.mine`);
     arrayWithoutMine = [];
     allDiv.forEach((item) =>
         item.classList.contains("mine") ? "" : arrayWithoutMine.push(item)
     );
     let isWinner = arrayWithoutMine.filter(
-        (value) => value.style.backgroundColor == "white"
+        (value) => value.style.backgroundColor == "transparent"
     );
     if (allDiv.length - mineArray.length == isWinner.length) {
         console.log("winner");
-        mineArray.forEach((item) => item.style.backgroundColor = "red")
-        result.textContent = "Yupp!! Winner"
-        setTimeout(()=>{
+        mineArray.forEach((item) => (item.style.backgroundColor = "red"));
+        result.textContent = "Yupp!! Winner";
+        setTimeout(() => {
             document.querySelector(".beginner-main").classList.add("hide");
             document.querySelector(".playAgain").classList.remove("hide");
-        },2000)
+        }, 2000);
     }
 }
 
@@ -145,7 +144,8 @@ function blankAllSmellerWhiteDiv(divId) {
     if (boxArray.includes(id) !== -1) {
         let div = document.querySelector(`.box[id='${id}']`);
         if (div != undefined && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
         }
     }
 
@@ -156,11 +156,12 @@ function blankAllSmellerWhiteDiv(divId) {
             }']`
         );
         if (div != null && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
             if (
                 div.textContent == "" &&
                 div.classList.contains("blank") &&
-                div.style.backgroundColor == "white"
+                div.style.backgroundColor == "transparent"
             ) {
                 let nextId = `${parseInt(selectedId[0]) + 1}-${
                     parseInt(selectedId[1]) + 1
@@ -182,12 +183,12 @@ function blankAllSmellerWhiteDiv(divId) {
             }']`
         );
         if (div != null && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
             if (
                 div.textContent == "" &&
                 div.classList.contains("blank") &&
-                div.style.backgroundColor == "white"
+                div.style.backgroundColor == "transparent"
             ) {
                 let nextId = `${parseInt(selectedId[0]) - 1}-${
                     parseInt(selectedId[1]) - 1
@@ -207,12 +208,12 @@ function blankAllSmellerWhiteDiv(divId) {
             }']`
         );
         if (div != null && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
             if (
                 div.textContent == "" &&
                 div.classList.contains("blank") &&
-                div.style.backgroundColor == "white"
+                div.style.backgroundColor == "transparent"
             ) {
                 let nextId = `${parseInt(selectedId[0]) + 1}-${
                     parseInt(selectedId[1]) - 1
@@ -232,12 +233,12 @@ function blankAllSmellerWhiteDiv(divId) {
             }']`
         );
         if (div != null && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
             if (
                 div.textContent == "" &&
                 div.classList.contains("blank") &&
-                div.style.backgroundColor == "white"
+                div.style.backgroundColor == "transparent"
             ) {
                 let nextId = `${parseInt(selectedId[0]) - 1}-${
                     parseInt(selectedId[1]) + 1
@@ -257,12 +258,12 @@ function blankAllSmellerWhiteDiv(divId) {
             )}']`
         );
         if (div != null && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
             if (
                 div.textContent == "" &&
                 div.classList.contains("blank") &&
-                div.style.backgroundColor == "white"
+                div.style.backgroundColor == "transparent"
             ) {
                 let nextId = `${parseInt(selectedId[0]) - 1}-${parseInt(
                     selectedId[1]
@@ -282,12 +283,12 @@ function blankAllSmellerWhiteDiv(divId) {
             )}']`
         );
         if (div != null && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
             if (
                 div.textContent == "" &&
                 div.classList.contains("blank") &&
-                div.style.backgroundColor == "white"
+                div.style.backgroundColor == "transparent"
             ) {
                 let nextId = `${parseInt(selectedId[0]) + 1}-${parseInt(
                     selectedId[1]
@@ -307,12 +308,12 @@ function blankAllSmellerWhiteDiv(divId) {
             }']`
         );
         if (div != null && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
             if (
                 div.textContent == "" &&
                 div.classList.contains("blank") &&
-                div.style.backgroundColor == "white"
+                div.style.backgroundColor == "transparent"
             ) {
                 let nextId = `${parseInt(selectedId[0])}-${
                     parseInt(selectedId[1]) - 1
@@ -332,13 +333,13 @@ function blankAllSmellerWhiteDiv(divId) {
             }']`
         );
         if (div != null && !div.classList.contains("mine")) {
-            div.style.backgroundColor = "white";
-            
+            div.style.backgroundColor = "transparent";
+            div.style.color = "white";
 
             if (
                 div.textContent == "" &&
                 div.classList.contains("blank") &&
-                div.style.backgroundColor == "white"
+                div.style.backgroundColor == "transparent"
             ) {
                 let nextId = `${parseInt(selectedId[0])}-${
                     parseInt(selectedId[1]) + 1
