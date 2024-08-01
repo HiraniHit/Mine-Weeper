@@ -15,33 +15,36 @@ function generateWithPrompt(mode) {
         let row = prompt("Enter a size of ROW");
         let col = prompt("Enter a size of COL");
         let mine = prompt("Enter a mine amount");
-        generateGame(row, col, mine ,mode);
+        generateGame(row, col, mine, mode);
     }
 }
-document.querySelector(".refresh").addEventListener("click",()=>{
-    boxArray = []
-    mineArray = []
-    time = 0
+
+document.querySelector(".refresh").addEventListener("click", () => {
+    boxArray = [];
+    mineArray = [];
+    time = 0;
     startPosition = null;
-        setTime();
+    setTime();
     startPosition = true;
-        if(gameMode == "beginner"){
-            generateGame(9,9,10,'beginner')
-        }else if(gameMode == "InterMediate"){
-            generateGame(16,16,40,'InterMediate')
-        }else if(gameMode == "Advance"){
-            generateGame(16,30,99,'Advance')
-        }else{
-            generateWithPrompt('Custom')
-        }
-})
-function generateGame(Row, Col, mine , mode) {
+    if (gameMode == "beginner") {
+        generateGame(9, 9, 10, "beginner");
+    } else if (gameMode == "InterMediate") {
+        generateGame(16, 16, 40, "InterMediate");
+    } else if (gameMode == "Advance") {
+        generateGame(16, 30, 99, "Advance");
+    } else {
+        generateWithPrompt("Custom");
+    }
+});
+
+function generateGame(Row, Col, mine, mode) {
+    time = 0;
     gameMode = mode;
     start.classList.add("hide");
     document.querySelector(".mines").textContent = mine;
     let beginnerDiv = document.querySelector(".beginner-main");
     let game = "";
-    
+
     while (mineArray.length < mine) {
         let mineRow = Math.floor(Math.random() * Row);
         let mineCol = Math.floor(Math.random() * Col);
@@ -60,7 +63,7 @@ function generateGame(Row, Col, mine , mode) {
         game += `</div>`;
     }
     beginnerDiv.innerHTML = game;
-    
+
     let mineBox = document.querySelectorAll(".mine");
     mineBox.forEach((value) => {
         value.textContent = "M";
@@ -68,8 +71,7 @@ function generateGame(Row, Col, mine , mode) {
     });
     aroundNumber(Row, Col, mineArray);
 
-    
-    return mode
+    return mode;
 }
 
 function aroundNumber(Row, Col, mineArray) {
@@ -126,7 +128,7 @@ let timeInterval;
 function setTime() {
     if (startPosition == null) {
         clearInterval(timeInterval);
-       timeInterval = null
+        timeInterval = null;
     } else {
         timeInterval = setInterval(() => {
             time++;
@@ -137,43 +139,46 @@ function setTime() {
 let count = 0;
 function openDiv(id) {
     let clickedDiv = id.split("-");
-    
+
     let box = document.getElementById(`${clickedDiv[0]}-${clickedDiv[1]}`);
     if (box.classList.contains("mine")) {
         let allMines = document.querySelectorAll(".mine");
-            allMines.forEach((value) => {
-                value.style.backgroundColor = "red";
-                value.style.color = "white";
-            });
-           
-            // let mineInterval ;
-            // if(count < allMines.length -1){
-            //     mineInterval = setInterval(()=>{
-            //         allMines[count].style.backgroundColor = "red"
-            //         allMines[count].style.color = "white"
-            //         count ++;
-            //         console.log(count);
-            //         if(count == allMines.length){
-            //             clearInterval(mineInterval)
-            //             mineInterval = null
-            //             console.log("clear");
-            //         }
-            //     },300)
-            // }
+        // allMines.forEach((value) => {
+        //     value.style.backgroundColor = "red";
+        //     value.style.color = "white";
+        // });
+
+        let mineInterval ;
+        if(count < allMines.length -1){
+            mineInterval = setInterval(()=>{
+                allMines[count].style.backgroundColor = "rgb(32, 44, 179)"
+                allMines[count].style.color = "white"
+                count ++;
+                console.log(count);
+                if(count == allMines.length){
+                    clearInterval(mineInterval)
+                    mineInterval = null
+                    console.log("clear");
+                    setTimeout(() => {
+                        document.querySelector(".beginner-main").classList.add("hide");
+                        document.querySelector(".playAgain").classList.remove("hide");
+                    }, 2000);
+                }
+            },200)
+        }
         
         box.style.color = "white";
-        box.style.backgroundColor = "red";
+        box.style.backgroundColor = "rgb(32, 44, 179)";
         document.querySelector(".beginner-main").style.pointerEvents = "none";
         result.textContent = "Game Over";
 
-        setTimeout(() => {
-            document.querySelector(".beginner-main").classList.add("hide");
-            document.querySelector(".playAgain").classList.remove("hide");
-        },2000);
+        // setTimeout(() => {
+        //     document.querySelector(".beginner-main").classList.add("hide");
+        //     document.querySelector(".playAgain").classList.remove("hide");
+        // }, 8000);
 
         startPosition = null;
         setTime();
-
     } else if (box.textContent == "") {
         blankAllSmellerWhiteDiv(id);
     } else {
@@ -193,7 +198,7 @@ function openDiv(id) {
     if (allDiv.length - mineArray.length == isWinner.length) {
         console.log("winner");
         startPosition = null;
-        setTime()
+        setTime();
         mineArray.forEach((item) => (item.style.backgroundColor = "red"));
         result.textContent = "Yupp!! Winner";
         setTimeout(() => {
