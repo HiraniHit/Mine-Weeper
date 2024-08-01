@@ -13,6 +13,6 @@ You can also create your custom board in the game
 
 
 
-Another interface og game
+Another interface of game
 
 ![playing view](./img/Screenshot%202024-08-01%20170923.png)
