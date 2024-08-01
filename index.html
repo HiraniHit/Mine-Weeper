@@ -1,45 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
-    <title>Mine Weeper</title>
-</head>
-<body>
-
-    <h1>Mine Weeper</h1>
-
-    <div class="mode-btns">
-        <button class="modeBtn" value="beginner" onclick="generateGame(9,9,10)">beginner</button>
-        <button class="modeBtn" value="InterMediate" onclick="generateGame(16,16,40)">InterMediate</button>
-        <button class="modeBtn" value="Advance" onclick="generateGame(16,30,99)">Advance</button>
-        <Button class="modeBtn" value="Custom" onclick="generateWithPrompt()">Custom</Button>
-        <button class="playAgain-btn" onclick="window.location.reload()">Play Again</button>
-    </div>
-    <div class="timmer">
-        <div>
-            <h3>Mines</h3>
-            <p class="mines">0</p>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0"
+        />
+        <link rel="stylesheet" href="index.css" />
+        <title>Mine Weeper</title>
+    </head>
+    <body>
+        <h1>Mine Weeper</h1>
+        <div class="header-container">
+            <div class="mode-btns">
+                <button
+                    class="modeBtn"
+                    value="beginner"
+                    onclick="generateGame(9,9,10,'beginner')"
+                >
+                    beginner
+                </button>
+                <button
+                    class="modeBtn"
+                    value="InterMediate"
+                    onclick="generateGame(16,16,40,'InterMediate')"
+                >
+                    InterMediate
+                </button>
+                <button
+                    class="modeBtn"
+                    value="Advance"
+                    onclick="generateGame(16,30,99,'Advance')"
+                >
+                    Advance
+                </button>
+                <button
+                    class="modeBtn"
+                    value="Custom"
+                    onclick="generateWithPrompt('Custom')"
+                >
+                    Custom
+                </button>
+                <button class="playAgain-btn refresh">
+                    <span class="material-symbols-outlined"> refresh </span>
+                </button>
+            </div>
+            <div class="timmer">
+                <div>
+                    <h3>Mines</h3>
+                    <p class="mines">0</p>
+                </div>
+                <div>
+                    <h3>Time</h3>
+                    <p class="time">0</p>
+                </div>
+            </div>
         </div>
-        <div>
-            <h3>Time</h3>
-            <p class="time">0</p>
+        <div class="container">
+            <div class="start">Select Your Mode</div>
+            <div class="beginner-main"></div>
+            <div class="playAgain hide">
+                <h2 id="result"></h2>
+                <button
+                    class="playAgain-btn"
+                    onclick="window.location.reload()"
+                >
+                    Play Again
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="container">
-
-        <div class="start">Select Your Mode</div>
-        <div class="beginner-main">
-        
-        </div>
-        <div class="playAgain hide">
-            <h2 id="result"></h2>
-            <button class="playAgain-btn" onclick="window.location.reload()">Play Again</button>
-        </div>
-    </div>
-
-    
-</body>
-<script src="index.js"></script>
+    </body>
+    <script src="index.js"></script>
 </html>

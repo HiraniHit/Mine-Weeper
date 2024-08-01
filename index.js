@@ -6,21 +6,42 @@ let timeDiv = document.querySelector(".time");
 let time = 0;
 let boxArray = [];
 let mineArray = [];
+let restart = false;
+let gameMode;
+let startPosition = true;
 
-function generateWithPrompt() {
+function generateWithPrompt(mode) {
     if (!board.classList.contains("hide")) {
         let row = prompt("Enter a size of ROW");
         let col = prompt("Enter a size of COL");
         let mine = prompt("Enter a mine amount");
-        generateGame(row, col, mine);
+        generateGame(row, col, mine ,mode);
     }
 }
-function generateGame(Row, Col, mine) {
+document.querySelector(".refresh").addEventListener("click",()=>{
+    boxArray = []
+    mineArray = []
+    time = 0
+    startPosition = null;
+        setTime();
+    startPosition = true;
+        if(gameMode == "beginner"){
+            generateGame(9,9,10,'beginner')
+        }else if(gameMode == "InterMediate"){
+            generateGame(16,16,40,'InterMediate')
+        }else if(gameMode == "Advance"){
+            generateGame(16,30,99,'Advance')
+        }else{
+            generateWithPrompt('Custom')
+        }
+})
+function generateGame(Row, Col, mine , mode) {
+    gameMode = mode;
     start.classList.add("hide");
     document.querySelector(".mines").textContent = mine;
     let beginnerDiv = document.querySelector(".beginner-main");
     let game = "";
-
+    
     while (mineArray.length < mine) {
         let mineRow = Math.floor(Math.random() * Row);
         let mineCol = Math.floor(Math.random() * Col);
@@ -39,14 +60,18 @@ function generateGame(Row, Col, mine) {
         game += `</div>`;
     }
     beginnerDiv.innerHTML = game;
-
+    
     let mineBox = document.querySelectorAll(".mine");
     mineBox.forEach((value) => {
         value.textContent = "M";
         value.classList.add("visited");
     });
     aroundNumber(Row, Col, mineArray);
+
+    
+    return mode
 }
+
 function aroundNumber(Row, Col, mineArray) {
     for (let i = 0; i < Row; i++) {
         for (let j = 0; j < Col; j++) {
@@ -96,7 +121,7 @@ function aroundNumber(Row, Col, mineArray) {
         item.textContent == "" ? item.classList.add("blank") : ""
     );
 }
-let startPosition = true;
+
 let timeInterval;
 function setTime() {
     if (startPosition == null) {
@@ -109,27 +134,46 @@ function setTime() {
         }, 1000);
     }
 }
-
+let count = 0;
 function openDiv(id) {
     let clickedDiv = id.split("-");
-
+    
     let box = document.getElementById(`${clickedDiv[0]}-${clickedDiv[1]}`);
     if (box.classList.contains("mine")) {
         let allMines = document.querySelectorAll(".mine");
-        allMines.forEach((value) => {
-            value.style.backgroundColor = "red";
-            value.style.color = "white";
-        });
+            allMines.forEach((value) => {
+                value.style.backgroundColor = "red";
+                value.style.color = "white";
+            });
+           
+            // let mineInterval ;
+            // if(count < allMines.length -1){
+            //     mineInterval = setInterval(()=>{
+            //         allMines[count].style.backgroundColor = "red"
+            //         allMines[count].style.color = "white"
+            //         count ++;
+            //         console.log(count);
+            //         if(count == allMines.length){
+            //             clearInterval(mineInterval)
+            //             mineInterval = null
+            //             console.log("clear");
+            //         }
+            //     },300)
+            // }
+        
         box.style.color = "white";
         box.style.backgroundColor = "red";
         document.querySelector(".beginner-main").style.pointerEvents = "none";
         result.textContent = "Game Over";
+
         setTimeout(() => {
             document.querySelector(".beginner-main").classList.add("hide");
             document.querySelector(".playAgain").classList.remove("hide");
-        }, 2000);
+        },2000);
+
         startPosition = null;
         setTime();
+
     } else if (box.textContent == "") {
         blankAllSmellerWhiteDiv(id);
     } else {

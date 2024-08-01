@@ -15,12 +15,23 @@ h1{
 .start{
     font-size: 30px;
 }
+.header-container{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 0 100px;
+    justify-content: space-between;
+    background-color: indigo;
+    padding: 10px;
+}
 .mode-btns{
     margin: auto;
     display:flex ;
     width: 500px;
     justify-content: space-around;
-    padding: 0 0 15px 0;
+    align-items: center;
+}
+.refresh{
+    padding: 2px 8px;
 }
 .container{
     height: 850px;
@@ -42,16 +53,21 @@ h1{
     display: flex;
 }
 .timmer{
-    border: 1px solid rgb(255, 255, 255);
     display: flex;
     width: fit-content;
     padding: 0 30px;
     margin: auto;
-    background-color: white;
+    color: white;
 }
 .timmer > div {
-    padding: 10px;
+    padding: 0 10px;
     text-align: center;
+}
+h3{
+    margin: 5px 0;
+}
+p{
+    margin: 5px 0;
 }
 .box{
     border-radius: 5px;
