@@ -2,6 +2,11 @@ let arrayWithoutMine = [];
 let result = document.getElementById("result");
 let board = document.querySelector(".beginner-main");
 let start = document.querySelector(".start");
+let timeDiv = document.querySelector(".time");
+let time = 0;
+let boxArray = [];
+let mineArray = [];
+
 function generateWithPrompt() {
     if (!board.classList.contains("hide")) {
         let row = prompt("Enter a size of ROW");
@@ -10,10 +15,9 @@ function generateWithPrompt() {
         generateGame(row, col, mine);
     }
 }
-let boxArray = [];
-let mineArray = [];
 function generateGame(Row, Col, mine) {
     start.classList.add("hide");
+    document.querySelector(".mines").textContent = mine;
     let beginnerDiv = document.querySelector(".beginner-main");
     let game = "";
 
@@ -41,7 +45,6 @@ function generateGame(Row, Col, mine) {
         value.textContent = "M";
         value.classList.add("visited");
     });
-
     aroundNumber(Row, Col, mineArray);
 }
 function aroundNumber(Row, Col, mineArray) {
@@ -93,6 +96,20 @@ function aroundNumber(Row, Col, mineArray) {
         item.textContent == "" ? item.classList.add("blank") : ""
     );
 }
+let startPosition = true;
+let timeInterval;
+function setTime() {
+    if (startPosition == null) {
+        clearInterval(timeInterval);
+       timeInterval = null
+    } else {
+        timeInterval = setInterval(() => {
+            time++;
+            timeDiv.textContent = time;
+        }, 1000);
+    }
+}
+
 function openDiv(id) {
     let clickedDiv = id.split("-");
 
@@ -111,6 +128,8 @@ function openDiv(id) {
             document.querySelector(".beginner-main").classList.add("hide");
             document.querySelector(".playAgain").classList.remove("hide");
         }, 2000);
+        startPosition = null;
+        setTime();
     } else if (box.textContent == "") {
         blankAllSmellerWhiteDiv(id);
     } else {
@@ -129,12 +148,18 @@ function openDiv(id) {
     );
     if (allDiv.length - mineArray.length == isWinner.length) {
         console.log("winner");
+        startPosition = null;
+        setTime()
         mineArray.forEach((item) => (item.style.backgroundColor = "red"));
         result.textContent = "Yupp!! Winner";
         setTimeout(() => {
             document.querySelector(".beginner-main").classList.add("hide");
             document.querySelector(".playAgain").classList.remove("hide");
         }, 2000);
+    }
+    if (startPosition) {
+        setTime();
+        startPosition = false;
     }
 }
 
